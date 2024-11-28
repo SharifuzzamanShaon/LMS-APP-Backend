@@ -54,7 +54,7 @@ app.use((error, req, res, text) => {
   res.status(status).json({ success: false, message });
 });
 
-const port =process.env.SERVER_PORT || 5000;
+const port =process.env.SERVER_PORT || 5001;
 const server = app.listen(port, async () => {
   console.log(`server Running at http://localhost:${port}`);
   await connectDB();

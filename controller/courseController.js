@@ -11,6 +11,8 @@ const sendEmail = require("../utils/sendEmail");
 const uploadCourse = async (req, res, next) => {
   try {
     let data = req.body;
+    console.log(data);
+
     const base64Image = data.thumbnail;
     if (base64Image) {
       const buffer = Buffer.from(base64Image, "base64");
@@ -66,6 +68,14 @@ const getSingleCourse = async (req, res, next) => {
       res.status(200).send({ success: true, course });
       await redis.set(id, course);
     }
+  } catch (error) {
+    next(error);
+  }
+};
+const viewAllCourses = async (req, res, next) => {
+  try {
+    const allCourses = await CourseModel.find();
+    res.status(200).send({success:true, allCourses})
   } catch (error) {
     next(error);
   }
@@ -169,9 +179,9 @@ const addReview = async (req, res, next) => {
     };
     course.reviews.push(newReview);
     let avg = 0;
-    course.reviews.forEach((rev)=> avg += rev.rating)
-    if(course){
-      course.ratings = avg / course.reviews.length
+    course.reviews.forEach((rev) => (avg += rev.rating));
+    if (course) {
+      course.ratings = avg / course.reviews.length;
     }
     await course?.save();
     res.status(200).send({ success: true, course });
@@ -183,6 +193,7 @@ module.exports = {
   uploadCourse,
   editCourse,
   getSingleCourse,
+  viewAllCourses,
   getCourseByUser,
   addQuestion,
   addAnswer,
