@@ -74,7 +74,7 @@ const getSingleCourse = async (req, res, next) => {
 };
 const viewAllCourses = async (req, res, next) => {
   try {
-    const allCourses = await CourseModel.find();
+    const allCourses = await CourseModel.find().select('name description _id');
     res.status(200).send({success:true, allCourses})
   } catch (error) {
     next(error);
