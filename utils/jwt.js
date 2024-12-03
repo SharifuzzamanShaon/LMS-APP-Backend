@@ -20,12 +20,14 @@ const sendToken = async (user, status, res, next) => {
       maxAge: accessTokenExpire * 60 * 60 * 1000,
       httpOnly: true,
       sameSite: "lax",
+      secure: true,
     };
     const refreshTokenOption = {
       expires: new Date(Date.now() + refreshTokenExpire * 24 * 60 * 60 * 1000),
       maxAge: refreshTokenExpire * 24 * 60 * 60 * 1000,
       httpOnly: true,
       sameSite: "lax",
+      secure: true,
     };
     res.cookie("access_token", accessToken, accessTokenOption);
     res.cookie("refresh_token", refreshToken, refreshTokenOption);
