@@ -54,7 +54,7 @@ app.use((error, req, res, text) => {
   res.status(status).json({ success: false, message });
 });
 
-const port =process.env.SERVER_PORT || 5001;
+const port =process.env.SERVER_PORT || 5005;
 const server = app.listen(port, async () => {
   console.log(`server Running at http://localhost:${port}`);
   await connectDB();
@@ -62,7 +62,7 @@ const server = app.listen(port, async () => {
 const io = require("socket.io")(server, {
   pingTimeout: 50000,
   cors: {
-    origin: [process.env.CLIENT_URL], // Allow these HTTP methods
+    origin: process.env.CLIENT_URLS, // Allow these HTTP methods
     credentials: true,
   },
 });
