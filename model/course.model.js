@@ -75,11 +75,11 @@ const courseSchema = new mongoose.Schema({
   tags: [String],
   level: {
     type: [String],
-    enum: ["beginner", "intermediate", "advance", "XL"],
+    enum: ["beginner", "intermediate", "advance"],
     required: true,
   },
   demoUrl: {},
-  benefits: [{ title: String }],
+  benefits: [],
   reviews: [reviewSchema],
   courseData: [courseDataSchema],
   purchased:Number,
