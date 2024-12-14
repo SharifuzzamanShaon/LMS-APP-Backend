@@ -13,7 +13,7 @@ const uploadCourse = async (req, res, next) => {
     let data = req.body;
     console.log(data);
 
-    const base64Image = data.thumbnail;
+    const base64Image = data?.thumbnail;
     if (base64Image) {
       const buffer = Buffer.from(base64Image, "base64");
       fs.writeFileSync("outputfile", buffer);
