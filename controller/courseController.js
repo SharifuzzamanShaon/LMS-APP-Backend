@@ -74,12 +74,26 @@ const getSingleCourse = async (req, res, next) => {
 };
 const viewAllCourses = async (req, res, next) => {
   try {
-    const allCourses = await CourseModel.find().select('name description _id');
+    const allCourses = await CourseModel.find().select('thumbnail name description _id price level');
     res.status(200).send({success:true, allCourses})
   } catch (error) {
     next(error);
   }
 };
+// Search course
+const searchCourse =async(req, res, next)=>{
+  try {
+    const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: 'i' } } : {}
+    const level = req.query.level ? { level: { $in: req.query.level } } : {}
+
+    const searchTarm ={ $and: [keyword, level] }
+
+    const result = await CourseModel.find(searchTarm).select('thumbnail name description _id price level');
+    res.status(200).send({success: true, result}) 
+  } catch (error) {
+    next(error)
+  }
+}
 //By varified user
 const getCourseByUser = async (req, res, next) => {
   try {
@@ -194,6 +208,7 @@ module.exports = {
   editCourse,
   getSingleCourse,
   viewAllCourses,
+  searchCourse,
   getCourseByUser,
   addQuestion,
   addAnswer,
