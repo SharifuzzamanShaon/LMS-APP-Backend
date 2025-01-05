@@ -72,15 +72,10 @@ Access the live application here: [SkillSage Live Application](https://skillsage
 
 ## Note
 
-This project is continuously evolving, and new features will be added in future updates.
+This project continuously evolves, and future updates will add new features.
 
 ---
 # SkillSage Project
-
-SkillSage is a platform for connecting freelance examiners, companies, and candidates. Below are the UML diagrams for the project:
-
-### UML Diagrams
-1. [Class Diagram](./docs/# SkillSage Project
 
 SkillSage is a platform for connecting freelance examiners, companies, and candidates. Below are the UML diagrams for the project:
 
