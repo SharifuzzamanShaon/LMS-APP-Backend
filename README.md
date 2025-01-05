@@ -1,4 +1,4 @@
-# Learning Management App
+# Learning Management App [Backend API]
 
 A modern learning management system built with Node.js, Next.js, MongoDB, and Redis. This application provides a comprehensive platform for managing and delivering educational content, featuring real-time notifications, efficient data caching, and a user-friendly interface.
 
@@ -7,11 +7,11 @@ A modern learning management system built with Node.js, Next.js, MongoDB, and Re
 - **User Management**: Handles user roles, authentication, and authorization.
 - **Course Management**: Enables creation, updating, and management of courses and content.
 - **Real-time Notifications**: Keeps users updated with the latest information using WebSockets.
+- **Conversation [Chats]: Connect with other students and group
+- **Chatting Features**: Real-time chat functionality implemented with Socket.IO.
 - **Efficient Caching**: Utilizes Redis for improved performance and scalability.
 - **Modern UI**: Built with Next.js for a responsive and engaging user experience.
-- **Chatting Features**: Real-time chat functionality implemented with Socket.IO.
 - **Email & OTP Verification**: Ensures secure account verification.
-- **Responsive Design**: Built with Tailwind CSS and Material UI for an intuitive user interface.
 
 ## Installation
    ### Backend
