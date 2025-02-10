@@ -48,13 +48,13 @@ app.use("/api", useRouter);
 
 app.use("/api/v1", router);
 
-app.use((error, req, res, text) => {
+app.use((error, req, res, next) => {
   const message = error.message ? error.message : "Server Error Occured";
   const status = error.status ? error.status : 500;
   res.status(status).json({ success: false, message });
 });
 
-const port =process.env.SERVER_PORT || 5005;
+const port =process.env.SERVER_PORT || 5008;
 const server = app.listen(port, async () => {
   console.log(`server Running at http://localhost:${port}`);
   await connectDB();

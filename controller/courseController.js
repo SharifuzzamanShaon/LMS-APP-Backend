@@ -60,11 +60,13 @@ const getSingleCourse = async (req, res, next) => {
     const id = req.params.courseId;
     const isCacheExist = await redis.get(id);
     if (isCacheExist) {
-      res.status(200).send({ success: true, isCacheExist });
+      res.status(200).send({ success: true, course:isCacheExist });
     } else {
       const course = await CourseModel.findById({ _id: id }).select(
         "-courseData.videoUrl -courseData.courseData -courseData.questions -courseData.links"
       );
+      console.log(course);
+      
       res.status(200).send({ success: true, course });
       await redis.set(id, course);
     }

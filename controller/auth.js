@@ -15,8 +15,10 @@ require("dotenv").config();
 const register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
-    if (!username || !email || !password)
-      throw error("email and password is required", 400);
+    if (!username) throw new Error("Username is required", 400);
+    if (!email) throw new Error("Email is required", 400);
+    if (!password) throw new Error("Password is required", 400);
+
     const isExists = await User.findOne({ email: email });
     if (isExists) {
       return res.status(409).send({ message: "user already exists" });
@@ -146,7 +148,7 @@ const socialAuth = async (req, res, next) => {
       //   Math.random().toString(10).slice(-2);
       const hash = await bcrypt.hash(generatePass, saltRounds);
       const newUser = new User({
-        username:email,
+        username: email,
         email,
         password: hash,
         avatar: photoURL,

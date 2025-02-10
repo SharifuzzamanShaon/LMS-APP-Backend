@@ -20,33 +20,20 @@ const courseDataSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    // required: true,
   },
-  videoUrl: {
-    type: String,
-    // required: true,
-  },
-  videoThumbnail: {
-    type: String,
-    // required: true,
-  },
-  videoSection: {
-    type: String,
-    // required: true,
-  },
-  videoLength: {
-    type: Number,
-    // required: true,
-  },
-  videoPlayer: {
-    type: String,
-    // required: true,
-  },
-  links: {
-    type: String,
-  },
+  sectionContents: [
+    {
+      videoUrl: {
+        type: String,
+      },
+      videoTitle: {
+        type: String,
+      },
+    },
+  ],
   questions: [questionSchema],
 });
+
 const courseSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -60,16 +47,10 @@ const courseSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  estimatedPrice: {
-    type: Number,
-  },
   thumbnail: {
     public_id: {
       type: String,
       //   required: true,
-    },
-    url: {
-      type: String,
     },
   },
   tags: [String],
@@ -78,11 +59,10 @@ const courseSchema = new mongoose.Schema({
     enum: ["beginner", "intermediate", "advance"],
     required: true,
   },
-  demoUrl: {},
   benefits: [],
   reviews: [reviewSchema],
   courseData: [courseDataSchema],
-  purchased:Number,
+  purchased: Number,
   ratings: {
     type: Number,
     default: 0,
