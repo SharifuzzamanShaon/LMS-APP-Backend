@@ -1,20 +1,18 @@
+const Enrollment = require("../model/enrollModel");
+
 const stripe = require("stripe")(
   "sk_test_51Qq6EcK5LodKUJLl0HG1snEOb78wvVIY70sNfQgkI5GTmTRZWqNcRhRRmXA0XGOCXgdWqNdxk26e4dzC09xbOQd800HodFA48a"
 );
 const makePayment = async (req, res, next) => {
   try {
-    // Access the course data from `isCacheExist`
     const course = req.body;
     console.log("Course Details:", course);
     console.log(course.price);
-    // Validate and parse course.price
     const price = parseFloat(course.price);
     if (isNaN(price)) {
       throw new Error("Invalid course price. Price must be a valid number.");
     }
-    // Convert price to integer (Stripe requires amount in the smallest currency unit)
     const priceInCents = Math.round(price * 100);
-
     const lineItems = [
       {
         price_data: {
@@ -32,10 +30,10 @@ const makePayment = async (req, res, next) => {
       payment_method_types: ["card"],
       mode: "payment",
       line_items: lineItems,
-      success_url: `https://www.google.com/`,
+      success_url: `http://localhost:3000/payment/success?sessionId={CHECKOUT_SESSION_ID}`,
       cancel_url: `https://www.facebook.com/`,
     });
-
+    console.log(session.id);
     res.status(200).json({ sessionId: session.id });
   } catch (error) {
     console.error("Stripe Error:", error);
@@ -43,6 +41,22 @@ const makePayment = async (req, res, next) => {
   }
 };
 
+const enrollUser = async (req, res, next) => {
+  try {
+    const sessionId = req.body
+    console.log(sessionId);
+    
+    console.log("payment success | ready to enroll");
+
+    // const newEnrollment = new Enrollment({ user: userId, course: courseId });
+    // await newEnrollment.save();
+    // return res.status(200).send({success: true})
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   makePayment,
+  enrollUser,
 };

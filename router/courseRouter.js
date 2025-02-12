@@ -12,7 +12,10 @@ const {
 const authMiddleware = require("../middleware/authenticate/authMiddleware");
 const router = require("express").Router();
 
+//admin router
 router.post("/create", uploadCourse);
+
+//user router
 router.patch("/edit-course/:courseId", editCourse);
 router.get("/get-course/:courseId", getSingleCourse);
 router.get("/view-all-course", viewAllCourses)
