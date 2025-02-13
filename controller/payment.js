@@ -30,8 +30,8 @@ const makePayment = async (req, res, next) => {
       payment_method_types: ["card"],
       mode: "payment",
       line_items: lineItems,
-      success_url: `http://localhost:3000/payment/success?sessionId={CHECKOUT_SESSION_ID}`,
-      cancel_url: `https://www.facebook.com/`,
+      success_url: `http://localhost:3000/payment/success?courseId=${course._id}&sessionId={CHECKOUT_SESSION_ID}`,
+      cancel_url: `http://localhost:3000/payment/cancel`,
     });
     console.log(session.id);
     res.status(200).json({ sessionId: session.id });
@@ -43,14 +43,14 @@ const makePayment = async (req, res, next) => {
 
 const enrollUser = async (req, res, next) => {
   try {
-    const sessionId = req.body
-    console.log(sessionId);
-    
-    console.log("payment success | ready to enroll");
-
-    // const newEnrollment = new Enrollment({ user: userId, course: courseId });
-    // await newEnrollment.save();
-    // return res.status(200).send({success: true})
+    // const sessionId = req.body
+    // console.log(sessionId);
+    // console.log("payment success | ready to enroll");
+    const newEnrollment = new Enrollment({ user: req.user._id, course: req.body.courseId })
+   const response =  await newEnrollment.save();
+   console.log(response);
+   
+    return res.status(200).send({success: true, message: "Payment successful! You are now enrolled."})
   } catch (error) {
     next(error);
   }

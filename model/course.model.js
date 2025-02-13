@@ -48,7 +48,7 @@ const courseSchema = new mongoose.Schema({
     required: true,
   },
   thumbnail: {
-    public_id: {
+    url: {
       type: String,
       //   required: true,
     },
