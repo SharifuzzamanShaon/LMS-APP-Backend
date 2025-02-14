@@ -29,6 +29,10 @@ const courseDataSchema = new mongoose.Schema({
       videoTitle: {
         type: String,
       },
+      paid: {
+        type: Boolean,
+        default: true,
+      },
     },
   ],
   questions: [questionSchema],
