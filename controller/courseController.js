@@ -76,7 +76,7 @@ const getSingleCourse = async (req, res, next) => {
 };
 const viewAllCourses = async (req, res, next) => {
   try {
-    const allCourses = await CourseModel.find().select('thumbnail name description _id price level');
+    const allCourses = await CourseModel.find().select('thumbnail name description _id price level, tags');
     res.status(200).send({success:true, allCourses})
   } catch (error) {
     next(error);
@@ -90,7 +90,7 @@ const searchCourse =async(req, res, next)=>{
 
     const searchTarm ={ $and: [keyword, level] }
 
-    const result = await CourseModel.find(searchTarm).select('thumbnail name description _id price level');
+    const result = await CourseModel.find(searchTarm).select('thumbnail name description _id price level, tags');
     res.status(200).send({success: true, result}) 
   } catch (error) {
     next(error)
