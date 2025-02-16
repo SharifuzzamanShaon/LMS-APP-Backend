@@ -10,9 +10,16 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    payment_info: {
-      type: Object,
+    payment_status: {
+      type: String,
+      enum: ["paid", "unpaid"],
+      default: "unpaid",
     },
+    totalAmount: {
+      type: Number,
+      required: true,
+    },
+    
   },
   { timestamps: true }
 );
