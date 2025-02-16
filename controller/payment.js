@@ -1,4 +1,5 @@
 const Enrollment = require("../model/enrollModel");
+const OrderModel = require("../model/order.model");
 
 const stripe = require("stripe")(
   "sk_test_51Qq6EcK5LodKUJLl0HG1snEOb78wvVIY70sNfQgkI5GTmTRZWqNcRhRRmXA0XGOCXgdWqNdxk26e4dzC09xbOQd800HodFA48a"
@@ -62,36 +63,39 @@ const enrollUser = async (req, res, next) => {
         message: "Invalid or incomplete payment session.",
       });
     }
+    await OrderModel.create({
+      courseId: courseId,
+      userId: req.user._id,
+      payment_status: session.payment_status,
+      totalAmount: session.amount_total / 100,
+    });
 
-    // Check if enrollment already exists
     const existingEnrollment = await Enrollment.findOne({
       user: req.user._id,
       course: courseId,
-      sessionId: sessionId, 
     });
 
     if (existingEnrollment) {
       return res.status(400).send({
         success: false,
-        message:
-          "Already enrolled in this course",
+        message: "Already enrolled in this course",
+      });
+    } else {
+      const newEnrollment = new Enrollment({
+        user: req.user._id,
+        course: courseId,
+        sessionId: sessionId, // Store the sessionId
+        paymentStatus: session.payment_status,
+        amount: session.amount_total / 100,
+      });
+
+      const response = await newEnrollment.save();
+      return res.status(200).send({
+        success: true,
+        message: "Payment successful! You are now enrolled.",
+        enrollment: response,
       });
     }
-
-    const newEnrollment = new Enrollment({
-      user: req.user._id,
-      course: courseId,
-      sessionId: sessionId, // Store the sessionId 
-      paymentStatus: session.payment_status,
-      amount: session.amount_total / 100,
-    });
-
-    const response = await newEnrollment.save();
-    return res.status(200).send({
-      success: true,
-      message: "Payment successful! You are now enrolled.",
-      enrollment: response,
-    });
   } catch (error) {
     next(error);
   }
