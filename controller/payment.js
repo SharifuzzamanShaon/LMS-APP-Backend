@@ -1,14 +1,12 @@
 const Enrollment = require("../model/enrollModel");
 const OrderModel = require("../model/order.model");
-
+const UserModel = require("../model/user.model");
 const stripe = require("stripe")(
   "sk_test_51Qq6EcK5LodKUJLl0HG1snEOb78wvVIY70sNfQgkI5GTmTRZWqNcRhRRmXA0XGOCXgdWqNdxk26e4dzC09xbOQd800HodFA48a"
 );
 const makePayment = async (req, res, next) => {
   try {
     const course = req.body;
-    console.log("Course Details:", course);
-    console.log(course.price);
     const price = parseFloat(course.price);
     if (isNaN(price)) {
       throw new Error("Invalid course price. Price must be a valid number.");
@@ -74,7 +72,7 @@ const enrollUser = async (req, res, next) => {
       user: req.user._id,
       course: courseId,
     });
-
+    console.log("existingEnrollment", existingEnrollment);
     if (existingEnrollment) {
       return res.status(400).send({
         success: false,
@@ -89,11 +87,14 @@ const enrollUser = async (req, res, next) => {
         amount: session.amount_total / 100,
       });
 
-      const response = await newEnrollment.save();
+      await newEnrollment.save();
+      await UserModel.findByIdAndUpdate(req.user._id, {
+        $push: { regCourses: courseId },
+      });
+
       return res.status(200).send({
         success: true,
         message: "Payment successful! You are now enrolled.",
-        enrollment: response,
       });
     }
   } catch (error) {
