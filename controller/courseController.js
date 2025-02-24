@@ -7,6 +7,7 @@ const fs = require("fs");
 const ejs = require("ejs");
 const path = require("path");
 const sendEmail = require("../utils/sendEmail");
+const Enrollment = require("../model/enrollModel");
 
 const uploadCourse = async (req, res, next) => {
   try {
@@ -205,6 +206,23 @@ const addReview = async (req, res, next) => {
     next(error);
   }
 };
+const enrolledCourses = async (req, res, next) => {
+  try {
+    const user = req.user;
+    // console.log(user);
+    // const enrolledCourses = await CourseModel.find({_id: {$in: user.regCourses}});
+    // console.log(enrolledCourses);
+    const enrollments = await Enrollment.find({ user: user._id })
+  .populate("CourseModel", "thumbnail name description _id price level, tags") 
+  // .populate("user", "name email") // (Optional) Populate user details
+  .exec();
+
+    res.status(200).send({success: true, enrollments})
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   uploadCourse,
   editCourse,
@@ -215,4 +233,5 @@ module.exports = {
   addQuestion,
   addAnswer,
   addReview,
+  enrolledCourses,
 };
