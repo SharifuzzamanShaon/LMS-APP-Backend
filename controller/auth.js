@@ -87,6 +87,7 @@ const login = async (req, res, next) => {
       email: user.email,
       avatar: user.avatar,
       role: user.role,
+      regCourses: user.regCourses,
     };
     await redis.set(user._id, JSON.stringify(payload));
     sendToken(payload, 200, res, next);
