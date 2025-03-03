@@ -212,8 +212,7 @@ const enrolledCourses = async (req, res, next) => {
     // console.log(user);
     // const enrolledCourses = await CourseModel.find({_id: {$in: user.regCourses}});
     // console.log(enrolledCourses);
-    const enrollments = await Enrollment.find({ user: user._id })
-  .populate("CourseModel", "thumbnail name description _id price level, tags") 
+    const enrollments = await Enrollment.find({ user: user._id }).populate("course", "thumbnail name description _id price level, tags") 
   // .populate("user", "name email") // (Optional) Populate user details
   .exec();
 
@@ -222,7 +221,21 @@ const enrolledCourses = async (req, res, next) => {
     next(error);
   }
 };
-
+const getEnrolledCourseContent = async (req, res, next) => {
+  try {
+    const user = req.user;
+    const courseId = req.params.courseId;
+    const isEnrolled = await Enrollment.findOne({user: user._id, course: courseId});
+    if(!isEnrolled){
+      throw error("Not enrolled in this course", 403);
+    }
+    const course = await CourseModel.findById(courseId);
+    
+    res.status(200).send({success: true, course})
+  } catch (error) {
+    next(error);
+  }
+}
 module.exports = {
   uploadCourse,
   editCourse,
@@ -234,4 +247,5 @@ module.exports = {
   addAnswer,
   addReview,
   enrolledCourses,
+  getEnrolledCourseContent,
 };
